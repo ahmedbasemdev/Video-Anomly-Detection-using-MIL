@@ -6,8 +6,9 @@ import os
 from glob import glob
 from tqdm import tqdm
 
-normal_videos = glob("../Training-Normal-Videos/*")
-abnormal_videos =glob("../Anomaly-Videos/*")
+normal_videos = glob("/content/Training-Normal-Videos-Part-1/*")[:50]
+abnormal_videos =glob("/content/Anomaly-Videos-Part-1/*")[:50]
+
 data = {"bags": [], "labels": []}
 
 for video in tqdm(normal_videos):
