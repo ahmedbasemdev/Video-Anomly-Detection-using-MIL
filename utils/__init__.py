@@ -1,3 +1,3 @@
 from .LossFunctions import MILRankLoss
-from .Common import  common
+from .config_file import  config
 from .DataSet import CustomDataset

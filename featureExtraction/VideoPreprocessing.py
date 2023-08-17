@@ -1,10 +1,10 @@
 from moviepy.editor import VideoFileClip
 import math
 import numpy as np
+from utils import config
 
-# from utils import common
 
-frame_size = 224
+frame_size = config['frame_size']
 
 
 def get_frames(my_segment, size=30):

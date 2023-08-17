@@ -1,11 +1,15 @@
 import torch
 import torch.nn as nn
 
-
 import torch
 import torch.nn.functional as F
+import json
+
+with open("utils/config.json") as json_data_file:
+    config = json.load(json_data_file)
 
 lambda1, lambda2 = 8e-5, 8e-5
+number_segments = config['number_segments']
 
 
 def MILRankLoss(y_pred, batch_size):
@@ -15,11 +19,11 @@ def MILRankLoss(y_pred, batch_size):
     y_pred = y_pred.view(batch_size, -1)
 
     for i in range(batch_size):
-        anomaly_index = torch.randperm(8).cuda()
-        normal_index = torch.randperm(8).cuda()
+        anomaly_index = torch.randperm(number_segments).cuda()
+        normal_index = torch.randperm(number_segments).cuda()
 
-        y_anomaly = y_pred[i, :8][anomaly_index]
-        y_normal = y_pred[i, 8:][normal_index]
+        y_anomaly = y_pred[i, :number_segments][anomaly_index]
+        y_normal = y_pred[i, number_segments:][normal_index]
 
         y_anomaly_max = torch.max(y_anomaly)  # anomaly
 
@@ -28,9 +32,8 @@ def MILRankLoss(y_pred, batch_size):
         loss += F.relu(1. - y_anomaly_max + y_normal_max)
 
         sparsity += torch.sum(y_anomaly) * lambda2
-        smooth += torch.sum((y_pred[i, :7] - y_pred[i, 1:8]) ** 2) * lambda1
+        smooth += torch.sum((y_pred[i, :(number_segments - 1)] - y_pred[i, 1:number_segments]) ** 2) * lambda1
 
     loss = (loss + sparsity + smooth) / batch_size
 
     return loss
-

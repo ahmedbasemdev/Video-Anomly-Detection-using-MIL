@@ -2,23 +2,24 @@ import numpy as np
 from model import AnomalyModel
 import torch
 from torch.utils.data import Dataset, DataLoader
-from utils import common, CustomDataset
+from utils import  CustomDataset
 from utils import MILRankLoss
 from tqdm import tqdm
+from utils import config
+
+
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+
+
 
 model = AnomalyModel()
 model = model.to(device)
 
-#
-# loss_fn = MILRankLoss()
-# optimizer = torch.optim.adagrad()
-#
 
 bags = np.load("featureExtraction/extractedFeatures/bags.npy")
 labels = np.load("featureExtraction/extractedFeatures/labels.npy")
-
+print(f" The Size of Each bag is {bags[0].shape}")
 ab_bags = np.load("featureExtraction/extractedFeatures/ab_bags.npy")
 ab_labels = np.load("featureExtraction/extractedFeatures/ab_labels.npy")
 
@@ -28,11 +29,11 @@ print(f"Number of ABNormal Bags is {ab_bags.shape[0]} \n")
 dataset = CustomDataset(bags, labels, ab_bags, ab_labels)
 data_loader = DataLoader(dataset, batch_size=4, shuffle=True)
 
-optimizer = torch.optim.Adagrad(model.parameters(), lr=0.001, weight_decay=0.0010000000474974513)
+optimizer = torch.optim.Adagrad(model.parameters(), lr=0.001, weight_decay=0.001)
 criterion = MILRankLoss
 
 print("Start Training ...")
-for epoch in range(common['number_epochs']):
+for epoch in range(config['epochs_number']):
     model.train()
     train_loss = 0
 
