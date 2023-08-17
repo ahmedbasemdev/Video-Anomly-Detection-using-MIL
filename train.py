@@ -1,14 +1,16 @@
 import numpy as np
-from utils import MILRankLoss
 from model import AnomalyModel
 import torch
 from torch.utils.data import Dataset, DataLoader
 from utils import common, CustomDataset
+from utils import MILRankLoss
+from tqdm import tqdm
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 model = AnomalyModel()
-model.train()
+model = model.to(device)
+
 #
 # loss_fn = MILRankLoss()
 # optimizer = torch.optim.adagrad()
@@ -19,13 +21,31 @@ labels = np.load("featureExtraction/extractedFeatures/labels.npy")
 
 ab_bags = np.load("featureExtraction/extractedFeatures/ab_bags.npy")
 ab_labels = np.load("featureExtraction/extractedFeatures/ab_labels.npy")
-dataset = CustomDataset(bags, labels, ab_bags, ab_labels)
 
+print(f"Number of Normal Bags is {bags.shape[0]} \n")
+print(f"Number of ABNormal Bags is {ab_bags.shape[0]} \n")
+
+dataset = CustomDataset(bags, labels, ab_bags, ab_labels)
 data_loader = DataLoader(dataset, batch_size=4, shuffle=True)
 
-for epoch in range(common['number_epochs']):
+optimizer = torch.optim.Adagrad(model.parameters(), lr=0.001, weight_decay=0.0010000000474974513)
+criterion = MILRankLoss
 
-    for bags, labels, ab_bags, ab_labels in data_loader:
-        print(model(bags).shape)
-        break
-    break
+print("Start Training ...")
+for epoch in range(common['number_epochs']):
+    model.train()
+    train_loss = 0
+
+    for bags, labels, ab_bags, ab_labels in tqdm(data_loader):
+        data = torch.cat((bags, ab_bags), dim=1).to(device)
+        batch_size = data.shape[0]
+        data = data.view(-1, data.size(-1)).to(device)
+
+        outputs = model(data)
+        loss = criterion(outputs, batch_size)
+        optimizer.zero_grad()
+        loss.backward()
+        optimizer.step()
+        train_loss += loss.item()
+
+    print(f'loss = {train_loss / len(data_loader)}')

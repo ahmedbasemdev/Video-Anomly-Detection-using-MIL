@@ -1,9 +1,12 @@
 from moviepy.editor import VideoFileClip
 import math
 import numpy as np
+
 # from utils import common
 
 frame_size = 224
+
+
 def get_frames(my_segment, size=30):
     """
     :keyword
