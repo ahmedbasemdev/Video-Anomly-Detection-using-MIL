@@ -11,7 +11,7 @@ abnormal_videos =glob("/content/Anomaly-Videos-Part-1/*/*")[:50]
 
 data = {"bags": [], "labels": []}
 
-print("Extract Normal Videos Representation \n")
+print("\nExtract Normal Videos Representation ")
 print("Loading .......\n")
 for video in tqdm(normal_videos):
     instances = vp.split_video(video, 8, 16)
@@ -20,8 +20,18 @@ for video in tqdm(normal_videos):
     data['bags'].append(output.detach().numpy())
     data['labels'].append(0)
 
-print("Extract AbNormal Videos Representation \n")
+
+bags = np.array(data['bags'])
+labels = np.array(data['labels'])
+np.save("extractedFeatures/bags.npy",bags)
+np.save("extractedFeatures/labels.npy",labels)
+
+
+print("\nExtract AbNormal Videos Representation")
 print("Loading .......\n")
+
+data = {"bags": [], "labels": []}
+
 for video in tqdm(abnormal_videos):
     instances = vp.split_video(video, 8, 16)
     instances = torch.from_numpy(instances).to(torch.float)
@@ -32,6 +42,6 @@ print("##### Done #####")
 
 bags = np.array(data['bags'])
 labels = np.array(data['labels'])
-np.save("bags.npy",bags)
-np.save("labels.npy",labels)
+np.save("extractedFeatures/ab_bags.npy",bags)
+np.save("extractedFeatures/ab_labels.npy",labels)
 
