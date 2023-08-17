@@ -1,6 +1,6 @@
 {
   "epochs_number" : 1000,
-  "number_frames" : 16,
+  "number_frames" : 32,
   "number_segments": 8,
   "frame_size": 224
 }

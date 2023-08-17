@@ -1,4 +1,4 @@
 import json
 
-with open("utils/config.json") as json_data_file:
+with open(r"C:\Users\Ahmed-Basem\Desktop\VideoAnomalyDetection\utils\config.json") as json_data_file:
     config = json.load(json_data_file)

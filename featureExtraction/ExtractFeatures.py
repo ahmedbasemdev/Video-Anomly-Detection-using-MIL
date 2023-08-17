@@ -10,8 +10,8 @@ from utils import config
 number_segments = config['number_segments']
 number_frames = config['number_frames']
 
-normal_videos = glob("/content/Training-Normal-Videos-Part-1/*")[:100]
-abnormal_videos = glob("/content/Anomaly-Videos-Part-1/*/*")[:100]
+normal_videos = glob("/content/Training-Normal-Videos-Part-1/*")
+abnormal_videos = glob("/content/Anomaly-Videos-Part-1/*/*")
 
 data = {"bags": [], "labels": []}
 
@@ -20,8 +20,16 @@ print("Loading .......\n")
 for video in tqdm(normal_videos):
     instances = vp.split_video(video, number_segments, number_frames)
     instances = torch.from_numpy(instances).to(torch.float)
-    output = c3d_model(instances)
-    data['bags'].append(output.detach().numpy())
+    tensors = []
+    for i in range(int(number_frames / 16)):
+        instances_splited = instances[:, :, 16 * i:16 * (i + 1), :, :]
+        output = c3d_model(instances_splited)
+        tensors.append(output)
+    stacked = torch.stack(tensors, dim=0)
+    average_tensor = torch.mean(stacked, dim=0)
+    print(average_tensor.shape)
+
+    data['bags'].append(average_tensor.detach().numpy())
     data['labels'].append(0)
 
 bags = np.array(data['bags'])
@@ -37,9 +45,18 @@ data = {"bags": [], "labels": []}
 for video in tqdm(abnormal_videos):
     instances = vp.split_video(video, number_segments, number_frames)
     instances = torch.from_numpy(instances).to(torch.float)
-    output = c3d_model(instances)
-    data['bags'].append(output.detach().numpy())
-    data['labels'].append(1)
+    tensors = []
+    for i in range(int(number_frames / 16)):
+        instances_splited = instances[:, :, 16 * i:16 * (i + 1), :, :]
+        output = c3d_model(instances_splited)
+        tensors.append(output)
+    stacked = torch.stack(tensors, dim=0)
+    average_tensor = torch.mean(stacked, dim=0)
+    print(average_tensor.shape)
+
+    data['bags'].append(average_tensor.detach().numpy())
+    data['labels'].append(0)
+
 print("##### Done #####")
 
 bags = np.array(data['bags'])
