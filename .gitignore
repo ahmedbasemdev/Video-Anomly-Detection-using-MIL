@@ -1,7 +1,6 @@
 Training-Normal-Videos
 *.mp4
 .idea
-*.npy
 __pycache__
 
 
