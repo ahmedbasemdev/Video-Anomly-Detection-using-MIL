@@ -5,7 +5,11 @@ from pretrained import c3d_model
 import os
 from glob import glob
 from tqdm import tqdm
-from utils import config
+import json
+
+
+with open("../utils/config.json") as json_data_file:
+    config = json.load(json_data_file)
 
 number_segments = config['number_segments']
 number_frames = config['number_frames']

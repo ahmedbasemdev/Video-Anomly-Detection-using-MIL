@@ -1,7 +1,9 @@
 from moviepy.editor import VideoFileClip
 import math
 import numpy as np
-from utils import config
+import json
+with open("../utils/config.json") as json_data_file:
+    config = json.load(json_data_file)
 
 
 frame_size = config['frame_size']

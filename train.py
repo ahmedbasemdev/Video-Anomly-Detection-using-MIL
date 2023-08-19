@@ -2,26 +2,23 @@ import numpy as np
 from model import AnomalyModel
 import torch
 from torch.utils.data import Dataset, DataLoader
-from utils import  CustomDataset
+from utils import CustomDataset
 from utils import MILRankLoss
 from tqdm import tqdm
-from utils import config
-
-
+import json
+with open("utils/config.json") as json_data_file:
+    config = json.load(json_data_file)
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-
 
 model = AnomalyModel()
 model = model.to(device)
 
-
 bags = np.load("featureExtraction/extractedFeatures/bags.npy")
 labels = np.load("featureExtraction/extractedFeatures/labels.npy")
 print(f" The Size of Each bag is {bags[0].shape}")
-ab_bags = np.load("featureExtraction/extractedFeatures/bags.npy")
-ab_labels = np.load("featureExtraction/extractedFeatures/labels.npy")
+ab_bags = np.load("featureExtraction/extractedFeatures/ab_bags.npy")
+ab_labels = np.load("featureExtraction/extractedFeatures/ab_labels.npy")
 
 print(f"Number of Normal Bags is {bags.shape[0]} \n")
 print(f"Number of ABNormal Bags is {ab_bags.shape[0]} \n")

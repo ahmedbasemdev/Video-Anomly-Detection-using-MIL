@@ -5,7 +5,7 @@ import torch
 import torch.nn.functional as F
 import json
 
-with open(r"C:\Users\Ahmed-Basem\Desktop\VideoAnomalyDetection\utils\config.json") as json_data_file:
+with open("config.json") as json_data_file:
     config = json.load(json_data_file)
 
 lambda1, lambda2 = 8e-5, 8e-5
