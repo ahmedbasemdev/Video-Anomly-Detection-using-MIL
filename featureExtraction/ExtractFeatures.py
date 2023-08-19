@@ -14,7 +14,7 @@ with open("../utils/config.json") as json_data_file:
 number_segments = config['number_segments']
 number_frames = config['number_frames']
 
-normal_videos = glob("/content/Training-Normal-Videos-Part-1/*")
+normal_videos = glob("../Training-Normal-Videos/*")
 abnormal_videos = glob("/content/Anomaly-Videos-Part-1/*/*")
 
 data = {"bags": [], "labels": []}
@@ -31,7 +31,7 @@ for video in tqdm(normal_videos):
         tensors.append(output)
     stacked = torch.stack(tensors, dim=0)
     average_tensor = torch.mean(stacked, dim=0)
-    print(average_tensor.shape)
+
 
     data['bags'].append(average_tensor.detach().numpy())
     data['labels'].append(0)
@@ -56,7 +56,7 @@ for video in tqdm(abnormal_videos):
         tensors.append(output)
     stacked = torch.stack(tensors, dim=0)
     average_tensor = torch.mean(stacked, dim=0)
-    print(average_tensor.shape)
+
 
     data['bags'].append(average_tensor.detach().numpy())
     data['labels'].append(0)
