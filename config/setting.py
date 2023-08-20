@@ -7,6 +7,7 @@ class AppConfig(BaseSettings):
     number_frames: int
     number_segments: int
     frame_size: int
+    number_videos:int
 
 
 json_string = '''{
@@ -14,7 +15,8 @@ json_string = '''{
     "epochs_number": 1000,
     "number_frames": 32,
     "number_segments": 8,
-    "frame_size": 112
+    "frame_size": 112,
+    "number_videos" : 100
     
 }
 '''

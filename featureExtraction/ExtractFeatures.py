@@ -15,9 +15,10 @@ args = parser.parse_args()
 
 number_segments = settings.number_segments
 number_frames = settings.number_frames
+number_videos = settings.number_videos
 
-normal_videos = glob(f"{args.normal_path}/*")
-abnormal_videos = glob(f"{args.abnormal_path}/*/*")
+normal_videos = glob(f"{args.normal_path}/*")[:number_videos]
+abnormal_videos = glob(f"{args.abnormal_path}/*/*")[:number_videos]
 
 data = {"bags": [], "labels": []}
 
