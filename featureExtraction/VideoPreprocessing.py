@@ -1,7 +1,7 @@
 from moviepy.editor import VideoFileClip
 import math
 import numpy as np
-from config import settings
+from setting import settings
 
 frame_size = settings.frame_size
 
