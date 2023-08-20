@@ -1,15 +1,10 @@
 import torch
-import torch.nn as nn
-
-import torch
 import torch.nn.functional as F
-import json
 
-with open("config.json") as json_data_file:
-    config = json.load(json_data_file)
+from config import settings
 
 lambda1, lambda2 = 8e-5, 8e-5
-number_segments = config['number_segments']
+number_segments = settings.number_segments
 
 
 def MILRankLoss(y_pred, batch_size):

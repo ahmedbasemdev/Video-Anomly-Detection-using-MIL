@@ -5,17 +5,19 @@ from pretrained import c3d_model
 import os
 from glob import glob
 from tqdm import tqdm
-import json
+from config import settings
+import argparse
 
+parser = argparse.ArgumentParser()
+parser.add_argument('--normal_path', type=str, required=True)
+parser.add_argument('--abnormal_path', type=str, required=True)
+args = parser.parse_args()
 
-with open("../utils/config.json") as json_data_file:
-    config = json.load(json_data_file)
+number_segments = settings.number_segments
+number_frames = settings.number_frames
 
-number_segments = config['number_segments']
-number_frames = config['number_frames']
-
-normal_videos = glob("../Training-Normal-Videos/*")
-abnormal_videos = glob("/content/Anomaly-Videos-Part-1/*/*")
+normal_videos = glob(f"{args.normal_path}/*")
+abnormal_videos = glob(f"{args.abnormal_path}/*/*")
 
 data = {"bags": [], "labels": []}
 
@@ -31,8 +33,6 @@ for video in tqdm(normal_videos):
         tensors.append(output)
     stacked = torch.stack(tensors, dim=0)
     average_tensor = torch.mean(stacked, dim=0)
-
-
     data['bags'].append(average_tensor.detach().numpy())
     data['labels'].append(0)
 
@@ -56,7 +56,6 @@ for video in tqdm(abnormal_videos):
         tensors.append(output)
     stacked = torch.stack(tensors, dim=0)
     average_tensor = torch.mean(stacked, dim=0)
-
 
     data['bags'].append(average_tensor.detach().numpy())
     data['labels'].append(0)

@@ -1,12 +1,9 @@
 from moviepy.editor import VideoFileClip
 import math
 import numpy as np
-import json
-with open("../utils/config.json") as json_data_file:
-    config = json.load(json_data_file)
+from config import settings
 
-
-frame_size = config['frame_size']
+frame_size = settings.frame_size
 
 
 def get_frames(my_segment, size=30):

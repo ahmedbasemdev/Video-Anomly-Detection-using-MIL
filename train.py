@@ -5,9 +5,7 @@ from torch.utils.data import Dataset, DataLoader
 from utils import CustomDataset
 from utils import MILRankLoss
 from tqdm import tqdm
-import json
-with open("utils/config.json") as json_data_file:
-    config = json.load(json_data_file)
+from config import settings
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
@@ -30,7 +28,7 @@ optimizer = torch.optim.Adagrad(model.parameters(), lr=0.001, weight_decay=0.001
 criterion = MILRankLoss
 
 print("Start Training ...")
-for epoch in range(config['epochs_number']):
+for epoch in range(settings.epochs_number):
     model.train()
     train_loss = 0
 
