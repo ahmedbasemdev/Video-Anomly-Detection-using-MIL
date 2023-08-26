@@ -29,10 +29,12 @@ data = {"bags": [], "labels": []}
 print("\nExtract Normal Videos Representation ")
 print("Loading .......\n")
 for video in tqdm(normal_videos):
+
     instances = vp.split_video(video, number_segments, number_frames)
     instances = torch.from_numpy(instances).to(torch.float)
     tensors = []
-    for i in range(int(number_frames / 16)):
+    print(instances.shape)
+    for i in range(int(instances.shape[2] / 16)):
         instances_splited = instances[:, :, 16 * i:16 * (i + 1), :, :]
         instances_splited = instances_splited.to(device)
         output = c3d_model(instances_splited)

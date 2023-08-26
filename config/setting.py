@@ -14,7 +14,7 @@ json_string = '''{
 
     "epochs_number": 1000,
     "number_frames": 32,
-    "number_segments": 8,
+    "number_segments": 32,
     "frame_size": 224,
     "number_videos" : 100
     
