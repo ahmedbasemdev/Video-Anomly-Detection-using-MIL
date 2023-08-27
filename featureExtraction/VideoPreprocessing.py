@@ -18,7 +18,15 @@ def get_frames(my_segment, size=30):
     ## Segment Level
     frames = []
     for my_frame in my_segment.iter_frames():
-        frames.append(my_frame)
+        frame_array = np.array(my_frame)
+
+        # Compute the L2 norm of the frame array
+        l2_norm = np.linalg.norm(frame_array)
+
+        # Apply L2 normalization
+        normalized_frame = frame_array / l2_norm
+
+        frames.append(normalized_frame)
     # print(np.array(frames).shape)
     frames = np.array(frames).reshape((3, -1, frame_size, frame_size))
     # try:
@@ -69,5 +77,10 @@ def split_video(video_path, num_segments, num_frames):
         if bagof_segments.shape[2] != frames.shape[1]:
             continue
             bagof_segments[i] = frames
-    bagof_segments = bagof_segments / 255
+    bagof_segments = bagof_segments
     return bagof_segments
+
+
+
+
+
