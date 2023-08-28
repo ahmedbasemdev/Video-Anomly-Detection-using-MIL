@@ -1,7 +1,9 @@
 from moviepy.editor import VideoFileClip
 import math
 import numpy as np
-from setting import settings
+from config import AppConfig
+settings = AppConfig()
+
 
 frame_size = settings.frame_size
 
@@ -79,8 +81,3 @@ def split_video(video_path, num_segments, num_frames):
             bagof_segments[i] = frames
     bagof_segments = bagof_segments
     return bagof_segments
-
-
-
-
-

@@ -5,24 +5,19 @@ from pretrained import c3d_model
 import os
 from glob import glob
 from tqdm import tqdm
-from setting import settings
-import argparse
-
+from config import AppConfig
 import torch
+from utils import get_pathes
 
+settings = AppConfig()
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-
-parser = argparse.ArgumentParser()
-parser.add_argument('--normal_path', type=str, required=True)
-parser.add_argument('--abnormal_path', type=str, required=True)
-args = parser.parse_args()
 
 number_segments = settings.number_segments
 number_frames = settings.number_frames
 number_videos = settings.number_videos
 
-normal_videos = glob(f"{args.normal_path}/*")[:number_videos]
-abnormal_videos = glob(f"{args.abnormal_path}/*/*")[:number_videos]
+normal_videos = get_pathes("../normal_train.txt")[:number_videos]
+abnormal_videos = get_pathes("../abnormal_train.txt")[:number_videos]
 
 data = {"bags": [], "labels": []}
 

@@ -25,6 +25,7 @@ dataset = CustomDataset(bags, labels, ab_bags, ab_labels)
 data_loader = DataLoader(dataset, batch_size=4, shuffle=True)
 
 optimizer = torch.optim.Adagrad(model.parameters(), lr=0.001, weight_decay=0.001)
+scheduler = torch.optim.lr_scheduler.MultiStepLR(optimizer, milestones=[25, 50])
 criterion = MILRankLoss
 
 print("Start Training ...")
@@ -43,5 +44,5 @@ for epoch in range(settings.epochs_number):
         loss.backward()
         optimizer.step()
         train_loss += loss.item()
-
+    scheduler.step()
     print(f'loss = {train_loss / len(data_loader)}')
