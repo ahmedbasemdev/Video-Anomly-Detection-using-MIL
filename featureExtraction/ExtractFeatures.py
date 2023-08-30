@@ -16,8 +16,8 @@ number_segments = settings.number_segments
 number_frames = settings.number_frames
 number_videos = settings.number_videos
 
-normal_videos = get_pathes("../normal_train.txt")[:number_videos]
-abnormal_videos = get_pathes("../abnormal_train.txt")[:number_videos]
+normal_videos = get_pathes("../data/normal_train.txt")[:number_videos]
+abnormal_videos = get_pathes("../data/abnormal_train.txt")[:number_videos]
 
 data = {"bags": [], "labels": []}
 

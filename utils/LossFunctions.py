@@ -1,9 +1,10 @@
 import torch
 import torch.nn.functional as F
 
-from config import settings
+from config import AppConfig
 
 lambda1, lambda2 = 8e-5, 8e-5
+settings= AppConfig()
 number_segments = settings.number_segments
 
 

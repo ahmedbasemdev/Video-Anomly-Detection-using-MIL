@@ -4,14 +4,16 @@ from torch.utils.data import Dataset
 
 class CustomDataset(Dataset):
 
-    def __init__(self, bags, labels, ab_bags, ab_labels):
+    def __init__(self):
         super().__init__()
 
-        self.bags = bags
-        self.labels = labels
+        self.bags = np.load("featureExtraction/extractedFeatures/bags.npy")
+        self.labels = np.load("featureExtraction/extractedFeatures/labels.npy")
+        self.ab_bags = np.load("featureExtraction/extractedFeatures/ab_bags.npy")
+        self.ab_labels = np.load("featureExtraction/extractedFeatures/ab_labels.npy")
 
-        self.ab_bags = ab_bags
-        self.ab_labels = ab_labels
+        print(f"There are {self.bags.shape[0]} Normal Bags in Data")
+
 
     def __len__(self):
         return len(self.labels)
